@@ -1,48 +1,77 @@
-
 <head>
     <meta charset="UTF-8">
     <title>Health Report</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Health Report</h1>
 
-    <h2>Recent weight changes</h2>
-    <table border="1">
-        <tr>
-            <th>Date</th>
-            <th>Weight (kg)</th>
-        </tr>
-        {% for record in weight_history %}
-        <tr>
-            <td>{{ record[0] }}</td>
-            <td>{{ record[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h2>Recent Weight Changes</h2>
+    <canvas id="weightChart"></canvas>  <!-- Line chart for weight -->
 
-    <h2>Sports data</h2>
-    <table border="1">
-        <tr>
-            <th>Date</th>
-            <th>Heart rate (bpm)</th>
-            <th>Step count</th>
-            <th>Calories consumed (kcal)</th>
-        </tr>
-        {% for record in exercise_data %}
-        <tr>
-            <td>{{ record[0] }}</td>
-            <td>{{ record[1] }}</td>
-            <td>{{ record[2] }}</td>
-            <td>{{ record[3] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h2>Exercise Data (Calories Burned)</h2>
+    <canvas id="caloriesChart"></canvas> <!-- Bar chart for calories burned -->
 
-    <h2>Health advice</h2>
+    <h2>Health Advice</h2>
     <p>{{ health_advice }}</p>
 
     <a href="/">Back to Home</a>
+
+    <script>
+        // Retrieve data from Flask
+        const weightData = {{ weight_history | tojson }};
+        const exerciseData = {{ exercise_data | tojson }};
+
+        // Process weight data
+        const weightLabels = weightData.map(item => item[0]);  // Dates
+        const weightValues = weightData.map(item => item[1]);  // Weight values
+
+        // Process calorie data
+        const exerciseLabels = exerciseData.map(item => item[0]);  // Dates
+        const calorieValues = exerciseData.map(item => item[3]);   // Calories burned
+
+        // Line chart for weight
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: weightLabels,
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: weightValues,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
+
+        // Bar chart for calories burned
+        const caloriesCtx = document.getElementById('caloriesChart').getContext('2d');
+        new Chart(caloriesCtx, {
+            type: 'bar',
+            data: {
+                labels: exerciseLabels,
+                datasets: [{
+                    label: 'Calories Burned (kcal)',
+                    data: calorieValues,
+                    backgroundColor: 'orange',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
 </body>
-
-

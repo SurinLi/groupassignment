@@ -145,9 +145,9 @@ def generate_report():
     health_advice = response.text if response and response.text else "Unable to obtain nutritional analysis results"
 
     return render_template("health_report.html", 
-                           weight_history=weight_history, 
-                           exercise_data=exercise_data,
-                           health_advice=health_advice)
+                       weight_history=weight_history, 
+                       exercise_data=exercise_data,
+                       health_advice=health_advice)
     
 if __name__ == "__main__":
     app.run(debug=True)
