@@ -135,20 +135,24 @@ def generate_report():
 
     conn.close()
 
+
     prompt = (
-        "Summarize the user's last 7 days of weight and exercise data and provide **concise** health advice "
-        "with a focus on key insights (limit to 3-4 sentences). Avoid general health recommendations and keep it brief. "
-        f"Weight data: {weight_history}, Exercise data: {exercise_data}."
+        "Based on the user's last 7 days of weight and exercise data, provide a concise health summary with 3 key points:\n\n"
+        "- **Weight Trend:** (one-sentence summary)\n"
+        "- **Exercise Effect:** (one-sentence insight)\n"
+        "- **Improvement Suggestion:** (one practical tip)\n"
+        "Do NOT include general health advice—only insights derived from the data."
+        f"\n\nWeight Data: {weight_history}\nExercise Data: {exercise_data}"
     )
-    
-    response = model.generate_content(prompt)
+
+    response = model.generate_content(prompt, generation_config={"max_tokens": 200})
     health_advice = response.text if response and response.text else "Unable to obtain health analysis."
-    health_advice = " ".join(health_advice.split()[:100]) + "..."  
 
     return render_template("health_report.html", 
                            weight_history=weight_history, 
                            exercise_data=exercise_data,
                            health_advice=health_advice)
+
     
 if __name__ == "__main__":
     app.run(debug=True)
