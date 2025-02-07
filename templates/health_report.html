@@ -18,8 +18,14 @@
     </div>
 
     <h2>Health Advice</h2>
-    <p>{{ health_advice }}</p>
-
+    <ul>
+        {% for line in health_advice.split("\n") %}
+            {% if line.strip() %}
+                <li>{{ line.strip() }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    
     <a href="/">Back to Home</a>
 
     <script>
