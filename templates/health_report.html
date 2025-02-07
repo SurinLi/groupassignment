@@ -8,10 +8,14 @@
     <h1>Health Report</h1>
 
     <h2>Recent Weight Changes</h2>
-    <canvas id="weightChart"></canvas>  <!-- Line chart for weight -->
+    <div style="width: 600px; height: 300px; margin: auto;">
+        <canvas id="weightChart"></canvas>
+    </div>
 
     <h2>Exercise Data (Calories Burned)</h2>
-    <canvas id="caloriesChart"></canvas> <!-- Bar chart for calories burned -->
+    <div style="width: 600px; height: 300px; margin: auto;">
+        <canvas id="caloriesChart"></canvas>
+    </div>
 
     <h2>Health Advice</h2>
     <p>{{ health_advice }}</p>
@@ -47,6 +51,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: { beginAtZero: false }
                 }
@@ -68,6 +73,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: { beginAtZero: true }
                 }
