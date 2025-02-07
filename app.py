@@ -47,7 +47,7 @@ init_db()
 def index():
     return render_template("index.html")
 
-# ========= Weight Update & BMI Calculation =========
+# ========= Weight Update  =========
 
 # Display the weight update form page
 @app.route("/update_weight_form", methods=["GET"])
