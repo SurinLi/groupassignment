@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="zh">
+
 <head>
     <meta charset="UTF-8">
-    <title>健康报告</title>
+    <title>Health Report</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>健康报告</h1>
+    <h1>Health Report</h1>
 
-    <h2>最近体重变化</h2>
+    <h2>Recent weight changes</h2>
     <table border="1">
         <tr>
-            <th>日期</th>
-            <th>体重 (kg)</th>
+            <th>Date</th>
+            <th>Weight (kg)</th>
         </tr>
         {% for record in weight_history %}
         <tr>
@@ -22,13 +21,13 @@
         {% endfor %}
     </table>
 
-    <h2>运动数据</h2>
+    <h2>Sports data</h2>
     <table border="1">
         <tr>
-            <th>日期</th>
-            <th>心率 (bpm)</th>
-            <th>步数</th>
-            <th>卡路里消耗 (kcal)</th>
+            <th>Date</th>
+            <th>Heart rate (bpm)</th>
+            <th>Step count</th>
+            <th>Calories consumed (kcal)</th>
         </tr>
         {% for record in exercise_data %}
         <tr>
@@ -40,10 +39,10 @@
         {% endfor %}
     </table>
 
-    <h2>健康建议</h2>
+    <h2>Health advice</h2>
     <p>{{ health_advice }}</p>
 
-    <a href="/">返回首页</a>
+    <a href="/">Back to Home</a>
 </body>
-</html>
+
 
