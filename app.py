@@ -122,37 +122,32 @@ def submit_food():
     return render_template("dashboard.html", message="Diet data recorded!", nutrition_analysis=nutrition_result)
 
 # ========= Generate health report ==========
+
 @app.route("/generate_report", methods=["GET"])
 def generate_report():
     conn = sqlite3.connect("health.db")
     cursor = conn.cursor()
 
+    # Get the weight data for the last 7 days
     cursor.execute("SELECT date, weight FROM weight_history ORDER BY date DESC LIMIT 7")
     weight_history = cursor.fetchall()
 
+    # Get the last 7 days of exercise data
     cursor.execute("SELECT date, heart_rate, steps, calories FROM exercise_data ORDER BY date DESC LIMIT 7")
     exercise_data = cursor.fetchall()
 
     conn.close()
 
-
-    prompt = (
-        "Based on the user's last 7 days of weight and exercise data, provide a concise health summary with 3 key points:\n\n"
-        "- **Weight Trend:** (one-sentence summary)\n"
-        "- **Exercise Effect:** (one-sentence insight)\n"
-        "- **Improvement Suggestion:** (one practical tip)\n"
-        "Do NOT include general health advice—only insights derived from the data."
-        f"\n\nWeight Data: {weight_history}\nExercise Data: {exercise_data}"
-    )
-
-    response = model.generate_content(prompt, generation_config={"max_tokens": 200})
-    health_advice = response.text if response and response.text else "Unable to obtain health analysis."
+    # Generate AI health recommendations (based on historical data)
+    prompt = f"User's weight change in the last 7 days: {weight_history}, Sports data: {exercise_data}. Please provide an overall health analysis, including weight trends, exercise recommendations, and dietary modification plans."
+    response = model.generate_content(prompt)
+    
+    health_advice = response.text if response and response.text else "Unable to obtain nutritional analysis results"
 
     return render_template("health_report.html", 
-                           weight_history=weight_history, 
-                           exercise_data=exercise_data,
-                           health_advice=health_advice)
-
+                       weight_history=weight_history, 
+                       exercise_data=exercise_data,
+                       health_advice=health_advice)
     
 if __name__ == "__main__":
     app.run(debug=True)
